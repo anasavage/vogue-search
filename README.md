@@ -3,8 +3,7 @@
 A search engine built from scratch using Python featuring a web crawler, inverted index, and TF-IDF ranking algorithm on Vogue.com content.
 
 ## Live Demo
-https://vogue-search.streamlit.app/
-
+https://ana-vogue-search.streamlit.app/
 ## About
 This project implements core search engine concepts from scratch without using any search libraries. It crawls Vogue.com, processes the content, builds an inverted index, and ranks results using the TF-IDF algorithm used by early search engines like Google.
 
