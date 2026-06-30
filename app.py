@@ -1,9 +1,30 @@
 # This is our search engine's user interface
-# Streamlit turns this Python code into a website automatically!
+# Now it loads pre-crawled data from a JSON file instead of crawling every time
+# This makes the app much faster!
 
 import streamlit as st
-from crawler import crawled_pages
+import json  # json lets us read and write JSON files
 from indexer import build_index, search
+
+# Load our pre-crawled data from the JSON file
+# This is much faster than re-crawling Vogue every time someone visits
+@st.cache_data
+def load_data():
+    # open() opens a file, 'r' means we're reading it
+    with open('crawled_data.json', 'r') as f:
+        # json.load() converts the JSON file back into a Python list
+        return json.load(f)
+
+# Cache the index so it's not rebuilt every search
+@st.cache_data
+def get_index(data_json):
+    crawled_pages = json.loads(data_json)
+    return build_index(crawled_pages)
+
+# Load data and build index
+crawled_pages = load_data()
+data_json = json.dumps(crawled_pages)
+index = get_index(data_json)
 
 # Page configuration
 st.set_page_config(
@@ -12,7 +33,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# Custom CSS to make it look cleaner and more like a real search engine
+# Custom CSS for clean Google-style look
 st.markdown("""
     <style>
     .main {
@@ -36,14 +57,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Cache the index so it's not rebuilt every search
-@st.cache_data
-def get_index():
-    return build_index(crawled_pages)
-
-index = get_index()
-
-# Clean, minimal header
+# Clean minimal header
 st.markdown("<h1 style='text-align: center; font-weight: 700;'>Vogue Search</h1>", unsafe_allow_html=True)
 st.markdown(
     f"<p style='text-align: center; color: #5f6368;'>Custom search engine indexing {len(crawled_pages)} pages from Vogue.com</p>",

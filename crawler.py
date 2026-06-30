@@ -124,3 +124,12 @@ for url in urls_to_crawl:
 print(f"\nDone! Crawled {len(crawled_pages)} pages successfully")
 for page in crawled_pages:
     print(f"- {page['title']}")
+    import json
+
+# Save crawled pages to a JSON file
+# This means we don't need to re-crawl every time the app loads
+# json.dumps() converts our Python list to a JSON string
+with open('crawled_data.json', 'w') as f:
+    json.dump(crawled_pages, f)
+    
+print("Saved crawled data to crawled_data.json!")
