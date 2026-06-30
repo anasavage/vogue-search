@@ -172,31 +172,3 @@ def search(query, index, crawled_pages):
     return results
 
 
-# =============================================
-# TEST OUR SEARCH ENGINE
-# =============================================
-
-# Import our crawled pages from crawler.py
-# First let's run the crawler to get fresh pages
-from crawler import crawled_pages
-
-# Build the index from our crawled pages
-print("Building search index...")
-index = build_index(crawled_pages)
-print(f"Index built! Indexed {len(index)} unique words\n")
-
-# Test some searches
-test_queries = ["hair", "fashion", "beauty", "dress", "skincare"]
-
-for query in test_queries:
-    print(f"🔍 Search: '{query}'")
-    results = search(query, index, crawled_pages)
-    
-    if results:
-        # Show top 3 results for each query
-        for i, result in enumerate(results[:3], 1):
-            print(f"  {i}. {result['title']}")
-            print(f"     Score: {result['score']} | URL: {result['url']}")
-    else:
-        print("  No results found")
-    print()
